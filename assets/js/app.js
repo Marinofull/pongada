@@ -76,8 +76,8 @@ app.controller("game", ['$scope', function ($scope){
                 $scope.node[i].class[1]="";
 
             $scope.selected = null;
-            //  $scope.turn = !$scope.turn;// de 2
-             $scope.turn = false;
+             $scope.turn = !$scope.turn;// de 2
+             // $scope.turn = false;
             // cellplaying();
         };
 
