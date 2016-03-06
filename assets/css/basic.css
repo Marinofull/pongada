@@ -1,3 +1,4 @@
+
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -232,7 +233,6 @@ body{
     width: 65px;
     height: 65px;
     border-radius: 50%;
-    background: green;
     position: absolute;
     z-index: 5;
     -webkit-transition: all ease-out 0.8s;
@@ -320,4 +320,7 @@ body{
     .cellavatar {
         background: url(../img/cell.jpg) -19px 0;
         background-size: cover;
+    }
+    .adjacence{
+        border: 2px dotted red;
     }
