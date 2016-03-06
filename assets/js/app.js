@@ -105,10 +105,17 @@ app.controller("game", ['$scope', function ($scope){
 
         $scope.selected = p;
         var adjs = adj(p.class[0][1]-1);
+
         // console.log(adjs);
+        empty = true;
         for(var i=0; i < adjs.length; i++){
-                if(! $scope.node[adjs[i]].filled)
-                $scope.node[adjs[i]].class[1]="adjacence";
+                if(! $scope.node[adjs[i]].filled){
+                    empty = false;
+                    $scope.node[adjs[i]].class[1]="adjacence";
+                }
+        }
+        if(empty){
+            $scope.selected = null;
         }
     };
     $scope.gerar = function(){
