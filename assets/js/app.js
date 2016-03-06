@@ -81,6 +81,19 @@ app.controller("game", ['$scope', function ($scope){
             // cellplaying();
         };
 
+        var a = '{';
+        for(var i=0; i < 9; i++){
+            if($scope.node[i].filled){
+               for(var j = 0; j < 6 && ($scope.pieces[j].class[0][1] != (i + 1)); j++);
+               if(j < 3) a = a + '1';
+               else a = a + '2';
+            } else
+                a = a + 0;
+        }
+        a =a + ($scope.turn+1);
+        a = a + '}';
+        console.log(a);
+
 
 
     }
