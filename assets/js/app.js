@@ -1,6 +1,8 @@
 var app=angular.module('pongada', []);
 
 app.controller("game", ['$scope', function ($scope){
+    $scope.turn = false;
+
     $scope.initialize = function(){
         $scope.pieces=[];
         $scope.pieceAux = {inc: [0,3], img: ["gokuavatar","cellavatar"]};
@@ -22,10 +24,10 @@ app.controller("game", ['$scope', function ($scope){
                 class: ['p'+ (i + $scope.pieceAux.inc[jump]), $scope.pieceAux.img[jump]],
                 id: i
             });
+
             $scope.node[i-1 + (jump*3)].filled = true;
         };
 
-        console.log($scope.node);
     };
 
 
@@ -49,17 +51,39 @@ app.controller("game", ['$scope', function ($scope){
 
             adjs.push(4);
         }
+
         return adjs;
     }
 
+    $scope.goto = function(n){
+        if (n.class[1] == "adjacence"){
+            $scope.node[$scope.selected.class[0][1]-1].filled=false;
+            $scope.selected.class[0] = 'p'+ (n.id+1);
+            n.filled = true;
+            for (var i = 0; i < 9; i++)
+                $scope.node[i].class[1]="";
+
+            $scope.selected = null;
+            $scope.turn = !$scope.turn;// de 2
+            // $scope.turn = false;
+            // cellplaying();
+        };
+
+
+
+    }
 
     $scope.selectPiece = function(p){
+        if(p.id < 4 && $scope.turn == true) return; //vez de cell clicando em goku
+        if(p.id >= 4 && $scope.turn == false) return; //vez de goku clicando em cell
+        if($scope.selected != null) return; //esta no meio de uma jogada
+
         $scope.selected = p;
-        var adjs = adj(p.id-1);
-        console.log(adjs);
+        var adjs = adj(p.class[0][1]-1);
+        // console.log(adjs);
         for(var i=0; i < adjs.length; i++){
                 if(! $scope.node[adjs[i]].filled)
-                $scope.node[adjs[i]].class.push("adjacence");
+                $scope.node[adjs[i]].class[1]="adjacence";
         }
     };
 
