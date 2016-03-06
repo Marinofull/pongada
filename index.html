@@ -1,21 +1,22 @@
-<html>
+<!DOCTYPE html>
+<html lang="en" ng-app="pongada">
 <head>
     <meta charset="UTF-8">
     <title>Pongadá</title>
-    <link rel="stylesheet" href="css/basic.css"/>
+    <link rel="stylesheet" href="assets/css/basic.css"/>
+    <script src="assets/js/angular.min.js"></script>
+    <script src="assets/js/app.js"></script>
 </head>
 <body>
-
-
-    <div class="pongada">
+    <div class="pongada" ng-controller="game">
         <span class="topline"></span><span class="leftline"></span><span class="rightline"></span><span class="bottomline"></span><span class="digonaloneline"></span><span class="digonaltwoline"></span><span class="centraloneline"></span><span class="centraltwoline"></span>
 
-        <div class="playercircle p1 gokuavatar"></div>
-        <div class="playercircle p2 gokuavatar"></div>
-        <div class="playercircle p3 gokuavatar"></div>
-        <div class="playercircle p7 cellavatar"></div>
-        <div class="playercircle p8 cellavatar"></div>
-        <div class="playercircle p9 cellavatar"></div>
+  <!-- piece positions -->
+        <div ng-repeat="i in node" class="playercircle" ng-class="i.class"></div>
+
+        <!-- real pieces -->
+        <div ng-repeat="p in pieces" ng-click="selectPiece(p)" class="playercircle" ng-class="p.class"></div>
+
     </div>
 </body>
 </html>
