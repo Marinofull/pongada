@@ -1,7 +1,6 @@
 var app=angular.module('pongada', []);
 
 app.controller("game", ['$scope', function ($scope){
-    $scope.turn = false;
 
     $scope.initialize = function(){
         $scope.pieces=[];
@@ -9,6 +8,12 @@ app.controller("game", ['$scope', function ($scope){
         $scope.arena = [];
         $scope.selected = null;
         $scope.node = [];
+        $scope.turn = false;
+        $scope.dictionary = {
+            world:{'111000222':[]}
+        };
+        $scope.dictionary.all = {};
+        $scope.dictionary.all['111000222'] = $scope.dictionary.world['111000222'];
 
         for (var i = 0; i < 9; i++) {
             $scope.node.push({
@@ -30,8 +35,6 @@ app.controller("game", ['$scope', function ($scope){
 
     };
 
-
-
     function adj(n){
         // 0 - 1 - 2
         // | \ | / |
@@ -48,8 +51,17 @@ app.controller("game", ['$scope', function ($scope){
 
             if  (n < 6) adjs.push(n + 3);
             if  (n > 2) adjs.push(n - 3);
+            var i;
+            for(i = 0; i < adjs.length && adjs[i] !=4; i++);
+            if(i == adjs.length)
+                adjs.push(4);
 
-            adjs.push(4);
+
+// if  (n == 2 ou 4 ) then n + 2
+//         if  (n == 0 ou 4 ) then n + 4
+//         if  (n == 6 ou 4 ) then n - 2
+//         if  (n == 8 ou 4 ) then n - 4
+
         }
 
         return adjs;
@@ -64,8 +76,8 @@ app.controller("game", ['$scope', function ($scope){
                 $scope.node[i].class[1]="";
 
             $scope.selected = null;
-            $scope.turn = !$scope.turn;// de 2
-            // $scope.turn = false;
+            //  $scope.turn = !$scope.turn;// de 2
+             $scope.turn = false;
             // cellplaying();
         };
 
@@ -86,8 +98,50 @@ app.controller("game", ['$scope', function ($scope){
                 $scope.node[adjs[i]].class[1]="adjacence";
         }
     };
+    $scope.gerar = function(){
+        var currentNode = '111000222';
+        var list = [currentNode];
+
+            var player = [1,2];
+            var turn = 0;
+        while(list.length != 0){
+            var current = list[0];
+            var currentChildren = $scope.dictionary.all[current];
+            list.shift();
+
+            for(var i=0; i < 9; i++){
+                if(current[i] == player[turn]){
+                    var adjs = adj(i);
+                    for(var j = 0 ; j< adjs.length; j++){
+                        var newcur = current;
+                        if (newcur[adjs[j]] == '0'){
+                            newcur = newcur.substr(0,adjs[j]) + newcur[i] + newcur.substr(adjs[j]+1);
+                            newcur = newcur.substr(0,i) + '0' + newcur.substr(i+1);
+
+                            if($scope.dictionary.all[newcur]){
+                                var elem = $scope.dictionary.all[newcur];
+                                currentChildren[newcur] = elem;
+                            }else{
+                                list.push(newcur);
+                                currentChildren[newcur] = [];
+                                $scope.dictionary.all[newcur] = currentChildren[newcur];
+                            }
+                        }
+                    }
+                }
+            }
+            turn = (turn-1)* -1;
+        }
+        var test = $scope.dictionary.all['111020022'];
+        console.log(test);
+    };
+
+
+
 
 $scope.initialize();
+$scope.gerar();
+console.log($scope.dictionary);
 }]);
 
 
