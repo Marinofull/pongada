@@ -3,11 +3,11 @@ var app=angular.module('pongada', []);
 app.service("gameStates", ["$http", function($http){
 
     this.getWorld = function(){
-        return $http.get("http://localhost/pongada/docs/file.json");
+        return $http.get("docs/file.json");
     }
 
     this.getEnds = function(){
-        return $http.get("http://localhost/pongada/docs/ends.json");
+        return $http.get("docs/ends.json");
     }
 
 }])
