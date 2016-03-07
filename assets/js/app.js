@@ -1,5 +1,6 @@
 var app=angular.module('pongada', []);
 
+/*importa os arquivos json contendo o mundo conhecido e os estados finais*/
 app.service("gameStates", ["$http", function($http){
 
     this.getWorld = function(){
@@ -17,7 +18,7 @@ app.controller("game", ['$scope',"gameStates", function ($scope, gameStates){
     // console.log(gameStates.getWorld());
 
 
-
+    // inicializador do escopo
     $scope.initialize = function(){
         gameStates.getEnds().then(function(response){
             $scope.ends = response.data.ends;
@@ -52,11 +53,12 @@ app.controller("game", ['$scope',"gameStates", function ($scope, gameStates){
             });
 
             $scope.node[i-1 + (jump*3)].filled = true;
-            $scope.node[i-1 + (jump*3)].who = (i < 4)  + 2 * (i >=4); // byte hack boolean extreme bind conversion
+            $scope.node[i-1 + (jump*3)].who = (i < 4)  + 2 * (i >=4); // evil bit hack boolean bind conversion
         };
 
     };
 
+    /*Função para saber os adjacentes de n*/
     function adj(n){
         // 0 - 1 - 2
         // | \ | / |
@@ -78,17 +80,12 @@ app.controller("game", ['$scope',"gameStates", function ($scope, gameStates){
             if(i == adjs.length)
                 adjs.push(4);
 
-
-// if  (n == 2 ou 4 ) then n + 2
-//         if  (n == 0 ou 4 ) then n + 4
-//         if  (n == 6 ou 4 ) then n - 2
-//         if  (n == 8 ou 4 ) then n - 4
-
         }
 
         return adjs;
     }
 
+    /*Função para mover uma peça após ser selecionada*/
     $scope.goto = function(n){
         if (n.class[1] == "adjacence"){
             $scope.node[$scope.selected.class[0][1]-1].filled=false;
@@ -102,7 +99,7 @@ app.controller("game", ['$scope',"gameStates", function ($scope, gameStates){
 
             $scope.selected = null;
 
-            // $scope.turn = false
+            //o trecho abaixo traduz a configuração do tabuleiro numa string config
             var config = "";
             for(var k = 0; k < $scope.node.length; k++){
                 if($scope.node[k].who == $scope.turn+1)
@@ -111,6 +108,7 @@ app.controller("game", ['$scope',"gameStates", function ($scope, gameStates){
                     config += "0";
             }
 
+            //o trecho abaixo é responsável por verificar se ganhou, caso ele retorne para a configuração inicial pra forçar a vitória numa configuração inválida faz uma piada com o último miss universo
             var initialConfigs= ["111000000", "000000111"];
             var playerName = ["Kakaroto","Cell"];
             for(var k = 0; k < $scope.ends.length; k++){
@@ -150,6 +148,7 @@ app.controller("game", ['$scope',"gameStates", function ($scope, gameStates){
 
     }
 
+    /*Função responsável por selecionar uma peça e apresentar quais os locais possíveis*/
     $scope.selectPiece = function(p){
         if(p.id < 4 && $scope.turn == true) return; //vez de cell clicando em goku
         if(p.id >= 4 && $scope.turn == false) return; //vez de goku clicando em cell
@@ -171,6 +170,8 @@ app.controller("game", ['$scope',"gameStates", function ($scope, gameStates){
             $scope.selected = null;
         }
     };
+
+    /*Função pra gerar o mundo de todos os estados possíveis, só que não funciona, é apenas de mentirinha*/
     $scope.gerar = function(){
         var currentNode = '111000222';
         var list = [currentNode];
@@ -210,11 +211,7 @@ app.controller("game", ['$scope',"gameStates", function ($scope, gameStates){
     };
 
 
-
-
 $scope.initialize();
 $scope.gerar();
 console.log($scope.dictionary);
 }]);
-
-
