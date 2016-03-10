@@ -22,7 +22,7 @@ app.controller("game", ['$scope', function ($scope){
 	    $scope.lastState = "1110002221";
         $scope.stopgGame = false;
         $scope.pieces=[];
-        $scope.pieceAux = {inc: [0,3], img: ["gokuavatar","cellavatar"]};
+        $scope.pieceAux = {inc: [0,3], img: ["gokuavatar","cellavatar"]};//variavel auxiliar pra ajudar a construção das peças
         $scope.selected = null;
         $scope.node = [];
         $scope.turn = false;
@@ -78,7 +78,8 @@ app.controller("game", ['$scope', function ($scope){
         return possibilities;
     };
 
-    /*constroi o grafo e vê se ganhou (condição de parada pra construção)*/
+    /*constroi o grafo e vê se ganhou (condição de parada pra construção)
+    retorna true ou false (ganhou ou n ganhou)*/
 	function judge(stateT){
         if($scope.totalPath.indexOf(stateT) == -1)// constroi o path, sem repetir estados, insere no inicio
             $scope.totalPath.unshift(stateT);
@@ -329,7 +330,7 @@ app.controller("game", ['$scope', function ($scope){
 
 
         /*add a borda vermelha caso a adjacência esteja vazia*/
-        empty = true;
+        var empty = true;
         for(var i=0; i < adjs.length; i++){
                 if(! $scope.node[adjs[i]].filled){
                     empty = false;
