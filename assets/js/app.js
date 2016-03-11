@@ -19,7 +19,7 @@ app.controller("game", ['$scope', function ($scope){
     $scope.initialize = function(){
 
         $scope.totalPath = ["1110002221"];
-	    $scope.lastState = "1110002221";
+        $scope.lastState = "1110002221";
         $scope.stopgGame = false;
         $scope.pieces=[];
         $scope.pieceAux = {inc: [0,3], img: ["gokuavatar","cellavatar"]};//variavel auxiliar pra ajudar a construção das peças
@@ -84,7 +84,7 @@ app.controller("game", ['$scope', function ($scope){
         if($scope.totalPath.indexOf(stateT) == -1)// constroi o path, sem repetir estados, insere no inicio
             $scope.totalPath.unshift(stateT);
 
-        console.log($scope.learnedStates);
+        console.table($scope.learnedStates);
 		var initialConfigs= ["000000111","111000000"];
 		var currentConfig = "";
 		var playerNumber = [2,1];
@@ -132,7 +132,7 @@ app.controller("game", ['$scope', function ($scope){
 			var cur = $scope.allStates[stateT];
 
             // if(cur.weight == 100000){
-    			if(stateT[9] == '2') { //verifica quem ganhou e chama a função que atualiza os pesos dos caminhos
+                if(stateT[9] == '2') { //verifica quem ganhou e chama a função que atualiza os pesos dos caminhos
                     updatePath(cur, 200000); //chama se Goku ganha
                 }else
                     updatePath(cur,0); // se Cell ganha
@@ -205,6 +205,7 @@ app.controller("game", ['$scope', function ($scope){
             }
         }
 
+        /*encapsular os blocos seguinte numa função a ser chamada com setTimeout()*/
         //descobre qual peça deve ser movida para alcançar a configuração mínima
         var from = -1, to = -1,piece = {};
         for(var m=0; m < 9; m++){
@@ -216,21 +217,17 @@ app.controller("game", ['$scope', function ($scope){
             }
         }
 
-            // preenche o tabuleiro trocando a peça de lugar
-            $scope.node[from].filled = false;
-                $scope.node[from].who = 0;
-                for(var p = 0; p < 6; p++){
-                        if($scope.pieces[p].class[0][1] == (from+1))
-                            piece = $scope.pieces[p];
-                }
-            $scope.node[to].filled = true;
-            $scope.node[to].who = 2;
-            piece.class[0] = 'p'+(to+1);
-
-
-
+        // preenche o tabuleiro trocando a peça de lugar
+        $scope.node[from].filled = false;
+            $scope.node[from].who = 0;
+            for(var p = 0; p < 6; p++){
+                    if($scope.pieces[p].class[0][1] == (from+1))
+                        piece = $scope.pieces[p];
+            }
+        $scope.node[to].filled = true;
+        $scope.node[to].who = 2;
+        piece.class[0] = 'p'+(to+1);
     }
-
 
 
     /*Função para saber os adjacentes de n*/
@@ -269,7 +266,6 @@ app.controller("game", ['$scope', function ($scope){
                 $scope.lastState += $scope.node[k].who;
             $scope.lastState += '1';
 
-
             //move a peça selecionada
             $scope.node[$scope.selected.class[0][1]-1].filled=false;
             $scope.node[$scope.selected.class[0][1]-1].who = 0;
@@ -306,10 +302,10 @@ app.controller("game", ['$scope', function ($scope){
 					st +=  $scope.node[k].who;
 				}
 				st += !$scope.turn+1;
-				 if(judge(st)){ // se Cell ganhou reseta o game
+                 if(judge(st)){ // se Cell ganhou reseta o game
 					$scope.stopgGame = true;
 					$scope.initialize();
-				 }else
+                }else
 					$scope.turn = !$scope.turn;// de 2
 			}
         };
