@@ -312,7 +312,6 @@ body{
         transform: translateX(-50%);
     }
 
-
     .gokuavatar{
         background: url(../img/goku.jpg);
         background-size: cover;
@@ -322,5 +321,5 @@ body{
         background-size: cover;
     }
     .adjacence{
-        border: 2px dotted red;
+        border: 3px dashed blue;
     }
